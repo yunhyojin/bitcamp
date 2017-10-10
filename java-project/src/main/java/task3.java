@@ -1,4 +1,4 @@
-public class App {
+public class task3 {
     public static void main(String[] args) {
         String name = "홍길동";
         int kor = 100;
@@ -12,7 +12,7 @@ public class App {
         System.out.printf("영어: %d\n", eng);   
         System.out.printf("수학: %d\n", math);   
         System.out.printf("총점: %d\n", sum);   
-        System.out.printf("평균: %.1f\n", aver);
+        System.out.printf("평균: %.1f\n", aver);   
 
         
     }
