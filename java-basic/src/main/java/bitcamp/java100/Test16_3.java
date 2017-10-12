@@ -1,6 +1,6 @@
 package bitcamp.java100;
 
-public class Test17_1 {
+public class Test16_3 {
 
     public static void main(String[] args) {
         int level = -10;
