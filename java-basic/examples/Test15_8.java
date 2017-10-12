@@ -26,10 +26,19 @@ public class Test15_8 {
         boolean b1 = false;
         boolean result = false && (b1 = true);
 
-        System.out.printf("b1=%b, result=%b\n", b1, result);
+        System.out.printf("b1 = %b, result = %b\n", b1, result);
 
         b1 = false;
         result = false & (b1 = true);
-        System.out.printf("b1=%b, result=%b\n", b1, result);
+        System.out.printf("b1 = %b, result = %b\n", b1, result);
+        
+        b1 = false;
+        result = true || (b1 = true);
+        System.out.printf("b1 = %b, result = %b\n", b1, result);
+        
+        b1 = false;
+        result = true | (b1 = true);
+        System.out.printf("b1 = %b, result = %b\n", b1, result);
+        
     }
 }
