@@ -13,8 +13,7 @@ public class Test17_4 {
     // static void m2(int...is values, int... values2) {} - 컴파일 오류
     // static void m2(int...is values, String... values2) {} - 컴파일 오류
 
-    static void m3(String name, int age, int... values) {
-    }
+    static void m3(String name, int age, int... values) {}
     // static void m4(int... values, String name, int age) {} - 컴파일 오류
     // static void m5(String name, int... values, int age) {} - 컴파일 오류
     // static void m6(String name, int... values, String tel) {} - 컴파일 오류
