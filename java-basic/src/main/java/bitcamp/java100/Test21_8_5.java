@@ -1,8 +1,6 @@
 package bitcamp.java100;
 
 import java.io.Console;
-import java.text.Format;
-import java.util.ArrayList;
 
 public class Test21_8_5 {
     static class Contact {
