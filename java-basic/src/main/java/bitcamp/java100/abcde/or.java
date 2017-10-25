@@ -1,27 +1,17 @@
 package bitcamp.java100.abcde;
 
-import java.io.Console;
+import java.util.Scanner;
 
 public class or {
+    static boolean confirm(String message) {
+        Scanner keyScan = new Scanner(System.in);
+        System.out.println(message);
+        String response = keyScan.nextLine().toLowerCase();
+        
+        if(response.equals("y") || response.equals("yes"))
+            return true;
+        return false;
+    }
     public static void main(String[] args) {
-        String name;
-        int kor;
-        int eng;
-        int math;
-        int sum;
-        float aver;
-        
-        
-        
-        Console console = System.console();
-        name = console.readLine("이름? ");
-        kor = Integer.parseInt(console.readLine("국어? "));
-        eng = Integer.parseInt(console.readLine("영어? "));
-        math = Integer.parseInt(console.readLine("수학? "));
-        sum = kor + eng + math;
-        aver = sum / 3f;
-        
-        
-        System.out.printf("%s, %d, %d, %d, %d, %f\n", name, kor, eng, math, sum, aver);
     }
 }
