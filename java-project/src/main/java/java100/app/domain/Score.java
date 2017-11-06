@@ -1,7 +1,5 @@
 package java100.app.domain;
 
-import java.util.Scanner;
-
 public class Score {  
     
     protected String name;

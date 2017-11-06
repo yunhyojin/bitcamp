@@ -1,10 +1,7 @@
 package java100.app.control;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
-
 import java100.app.domain.Board;
 import java100.app.util.Prompts;
 

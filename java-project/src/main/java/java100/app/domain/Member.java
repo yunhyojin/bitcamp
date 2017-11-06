@@ -1,7 +1,5 @@
 package java100.app.domain;
 
-import java.util.Scanner;
-
 public class Member {
     protected String name;
     protected String email;
