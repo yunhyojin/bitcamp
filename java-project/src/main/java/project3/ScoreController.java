@@ -1,34 +1,14 @@
-package java100.app;
+package project3;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 
 public class ScoreController {
     
-    static Scanner keyScan = new Scanner(System.in);
-    
     private ArrayList<Score> list = new ArrayList<>();
     
-    public void execute() {
-        loop:
-        while (true) {
-            System.out.print("성적관리> ");
-            String input = keyScan.nextLine();
-            switch (input) {
-            case "add": this.doAdd(); break;
-            case "list": this.doList(); break;
-            case "view": this.doView(); break;
-            case "update": this.doUpdate(); break;
-            case "delete": this.doDelete(); break;
-            case "main": break loop;
-            default: 
-                System.out.println("해당 명령이 없습니다.");
-            }
-        }
-    }
     
-    private void doDelete() {
+    public void doDelete() {
         System.out.println("[학생 삭제]");
         String name = Prompts.input("이름? ");
         
@@ -54,7 +34,7 @@ public class ScoreController {
         }
     }
 
-    private void doUpdate() {
+    public void doUpdate() {
         System.out.println("[학생 정보 변경]");
         String name = Prompts.input("이름? ");
         
@@ -75,7 +55,7 @@ public class ScoreController {
         }
     }
 
-    private void doView() {
+    public void doView() {
         System.out.println("[학생 정보]");
         String name = Prompts.input("이름? ");
         
@@ -96,7 +76,7 @@ public class ScoreController {
         }
     }
 
-    private void doList() {
+    public void doList() {
         System.out.println("[학생 목록]");
         
         Iterator<Score> iterator = list.iterator();
@@ -105,13 +85,13 @@ public class ScoreController {
         }
     }
 
-    private void doAdd() {
+    public void doAdd() {
         System.out.println("[학생 등록]");
         
         Score score;
         while (true) {
-            score = new Score();
-            score.input();
+            score = new Score(); // 성적 데이터를 저장할 빈 객체를 준비한다.
+            score.input(); // 사용자로부터 입력받은 데이터를 빈 객체에 저장한다.
             
             list.add(score);
             
@@ -121,3 +101,4 @@ public class ScoreController {
         
     }
 }
+

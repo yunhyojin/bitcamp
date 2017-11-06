@@ -1,9 +1,6 @@
-package project1;
+package project4;
 
-import java.util.Iterator;
 import java.util.Scanner;
-
-import com.google.common.cache.Cache;
 
 public class Score {
 
@@ -24,7 +21,7 @@ public class Score {
     }
 
     private void compute() {
-        sum = 0;
+        this.sum = 0;
         for (int sub : this.subjects) {
             this.sum += sub;
         }
@@ -54,12 +51,20 @@ public class Score {
         this.compute();
     }
 
-    public void printDateil() {
+    public void printDretil() {
         System.out.printf("%-4s, %4d, %4d, %4d, %4d, %6.1f\n", this.name, this.subjects[0], this.subjects[1],
                 this.subjects[2], this.sum, this.aver);
     }
+    public static boolean confirm(String message) {
+        Scanner keyScan = new Scanner(System.in);
+        System.out.print(message);
+        String response = keyScan.nextLine().toLowerCase();
 
-    public boolean confirm2(String message) {
+        if (response.equals("y") || response.equals("yes") || response.equals(" "))
+            return true;
+        return false;
+    }
+    public static boolean confirm2(String message) {
         Scanner keyScan = new Scanner(System.in);
         System.out.print(message);
         String response = keyScan.nextLine().toLowerCase();
@@ -76,12 +81,12 @@ public class Score {
         try {
             kor = Integer.parseInt(keyScan.nextLine());
         } catch (Exception e) {}
-        System.out.printf("영어(%d)", subjects[1]);
+        System.out.printf("영어(%d)",subjects[1]);
         int eng = subjects[1];
         try {
             eng = Integer.parseInt(keyScan.nextLine());
         } catch (Exception e) {}
-        System.out.printf("수학(%d)", subjects[2]);
+        System.out.printf("수학?(%d)",subjects[2]);
         int math = subjects[2];
         try {
             math = Integer.parseInt(keyScan.nextLine());
@@ -93,7 +98,7 @@ public class Score {
             subjects[2] = math;
             compute();
             System.out.println("변경하였습니다.");
-        } else {
+        }else {
             System.out.println("변경을 취소하였습니다.");
         }
     }

@@ -2,7 +2,12 @@ package java100.app;
 
 import java.util.Scanner;
 
+import java100.app.control.BoardController;
+import java100.app.control.MemberController;
+import java100.app.control.ScoreController;
+
 public class App {
+    
     static Scanner keyScan = new Scanner(System.in);
     static ScoreController scoreController = new ScoreController();
     static MemberController memberController = new MemberController();
@@ -72,4 +77,5 @@ public class App {
     private static void doQuit() {
         System.out.println("프로그램을 종료합니다.");
     }
+
 }

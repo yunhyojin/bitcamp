@@ -1,4 +1,4 @@
-package java100.app;
+package project3;
 
 import java.util.Scanner;
 
@@ -9,6 +9,8 @@ public class Score {
     protected int sum;
     protected float aver;
 
+    //: ### 생성자
+    //: > 다른 패키지에서도 호출할 수 있도록 public으로 공개한다.
     public Score() {
         this.subjects = new int[3];
     }
@@ -20,6 +22,7 @@ public class Score {
         this.compute();
     }
     
+    //: > 내부에서만 사용할 메서드이기 때문에 공개하지 않는다.
     private void compute() {
         int sum = 0;
         for (int sub : this.subjects) {
@@ -29,6 +32,7 @@ public class Score {
         this.aver = (float)this.sum / this.subjects.length;
     }
     
+    //: > 전체 공개할 메서드는 public으로 선언한다. 
     public void print() {
         System.out.printf("%-4s, %4d, %6.1f\n",  
                 this.name, 
@@ -75,7 +79,7 @@ public class Score {
             math = Integer.parseInt(keyScan.nextLine());
         } catch(Exception e) {}
         
-        if (Prompts.confirm2("변경하시겠습니까?(y/N) ")) {
+        if (confirm2("변경하시겠습니까?(y/N) ")) {
             this.subjects[0] = kor;
             this.subjects[1] = eng;
             this.subjects[2] = math;
@@ -85,6 +89,19 @@ public class Score {
         } else {
             System.out.println("변경을 취소하였습니다.");
         }
+    }
+    
+    static boolean confirm2(String message) {
+        Scanner keyScan = new Scanner(System.in);
+        System.out.print(message);
+        String response = keyScan.nextLine().toLowerCase();
+        
+        if (response.equals("n") || 
+                response.equals("no") || 
+                response.equals("")) {
+            return false;
+        }
+        return true;
     }
 
     public void printDetail() {
@@ -98,3 +115,4 @@ public class Score {
         
     }
 }
+

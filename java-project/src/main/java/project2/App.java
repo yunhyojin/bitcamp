@@ -1,4 +1,4 @@
-package project1;
+package project2;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,11 +22,11 @@ public class App {
         Scanner keyScan = new Scanner(System.in);
 
         loop: while (true) {
-            System.out.print("성적관리> ");
-            String ipuet = keyScan.nextLine();
-            switch (ipuet) {
+            System.out.println("성적관리> ");
+            String input = keyScan.nextLine();
+            switch (input) {
             case "add":
-                System.out.println("성적등록");
+                System.out.println("성적출력");
                 while (true) {
                     Score score = new Score();
                     score.input();
@@ -44,64 +44,62 @@ public class App {
                 break;
             case "view":
                 System.out.println("성적정보");
-                System.out.println("이름");
+                System.out.println("이름? ");
                 String name = keyScan.nextLine();
                 Score score = null;
                 iterator = list.iterator();
                 while (iterator.hasNext()) {
                     Score temp = iterator.next();
-                    if (temp.name.equals(name)) {
-                        score = temp;
-                        break;
+                    if(temp.name.equals(name)) {
+                       score = temp;
+                       break;
                     }
                 }
                 if (score == null) {
-                    System.out.printf("'s'정보x", name);
+                    System.out.printf("'%s'의 성적 정보가 없습니다.\n", name);
                 } else {
-                    score.printDateil();
+                    score.printDetail();
                 }
                 break;
-                
             case "update":
-                System.out.println("성적 변경");
-                System.out.println("이름? ");
-                name = keyScan.nextLine();
-                score = null;
-                iterator = list.listIterator();
-                while (iterator.hasNext()) {
-                    Score temp = iterator.next();
-                    if (temp.name.equals(name)) {
-                        score = temp;
-                        break;
-                    }
-                }
-                if (score == null) {
-                    System.out.printf("'s'님 정보x",name);
-                } else {
-                    score.update();
-                    }
-                break;
-                
-            case "delete":
-                System.out.println("성적 삭제");
+                System.out.println("성적변경");
                 System.out.println("이름? ");
                 name = keyScan.nextLine();
                 score = null;
                 iterator = list.iterator();
                 while (iterator.hasNext()) {
                     Score temp = iterator.next();
-                    if (temp.name.equals(name)) {
-                        score = temp;
-                        break;
+                    if(temp.name.equals(name)) {
+                       score = temp;
+                       break;
                     }
                 }
                 if (score == null) {
-                    System.out.printf("'s'정보x", name);
+                    System.out.printf("'%s'의 성적 정보가 없습니다.\n", name);
                 } else {
-                    if (!score.confirm2("정말 삭제 하시겠습니까?")) {
+                    score.update();
+                }
+                break;
+            case "delete":
+                System.out.println("성적삭제");
+                System.out.println("이름? ");
+                name = keyScan.nextLine();
+                score = null;
+                iterator = list.iterator();
+                while (iterator.hasNext()) {
+                    Score temp = iterator.next();
+                    if(temp.name.equals(name)) {
+                       score = temp;
+                       break;
+                    }
+                }
+                if (score == null) {
+                    System.out.printf("'%s'의 성적 정보가 없습니다.\n", name);
+                } else {
+                    if(!score.confirm2("정말삭제하시겠습니까?(y/N)")) {
                         list.remove(score);
-                        System.out.println("삭제되었습니다.");
-                    } else {
+                        System.out.println("삭제하였습니다.");
+                    }else {
                         System.out.println("삭제를 취소하였습니다.");
                     }
                 }
@@ -110,9 +108,10 @@ public class App {
                 System.out.println("프로그램을 종료합니다.");
                 break loop;
             default:
-                System.out.println("사용할수 없는 기능입니다.");
+                System.out.println("잘못된 명령어 입니다.");
                 break;
             }
         }
+
     }
 }
