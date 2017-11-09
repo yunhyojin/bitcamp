@@ -2,6 +2,8 @@ package java100.app.domain;
 
 import java.sql.Date;
 
+import java100.app.control.CSVFormatException;
+
 public class Board {
     protected int number;
     protected String title;
@@ -10,6 +12,26 @@ public class Board {
     protected int viewCount;
     
     public Board() {}
+    
+    public Board(String csv) throws CSVFormatException {
+        String[] rec = csv.split(",");
+        if(rec.length != 5)
+            throw new CSVFormatException("CSV 데이터 항목의 개수가 올바르지 않습니다.");
+        this.number = Integer.parseInt(rec[0]);
+        this.title = rec[1];
+        this.contents = rec[2];
+        this.regDate = Date.valueOf(rec[3]);
+        this.viewCount = Integer.parseInt(rec[4]);
+    }
+    
+    public String toCSVString() {
+        return String.format("%d,%s,%s,%s,%d",
+                this.getNumber(),
+                this.getTitle(),
+                this.getContents(),
+                this.getRegDate().toString(),
+                this.getViewCount());
+    }
     
     @Override
     public String toString() {

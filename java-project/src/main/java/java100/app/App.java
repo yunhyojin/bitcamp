@@ -19,11 +19,11 @@ public class App {
     
     public static void main(String[] args) {
         
-        controllerMap.put("1", new ScoreController());
-        controllerMap.put("2", new MemberController());
-        controllerMap.put("3", new BoardController());
+        controllerMap.put("1", new ScoreController("./data/score.csv"));
+        controllerMap.put("2", new MemberController("./data/member.csv"));
+        controllerMap.put("3", new BoardController("./data/board.csv"));
        
-        controllerMap.put("4", new RoomController());
+        controllerMap.put("4", new RoomController("./data/room.csv"));
         
         loop: while (true) {
             System.out.print("명령> ");
@@ -66,6 +66,7 @@ public class App {
         System.out.println("1 성적관리");
         System.out.println("2 회원관리");
         System.out.println("3 게시판");
+        System.out.println("3 강의실");
     }
 
     private static void doError() {

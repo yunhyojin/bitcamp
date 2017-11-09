@@ -1,5 +1,8 @@
 package java100.app.control;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -10,6 +13,49 @@ import java100.app.util.Prompts;
 public class RoomController extends ArrayList<Room> implements Controller{
     
     Scanner keyScan = new Scanner(System.in);
+    
+    
+    
+    private String dataFilePath;
+    
+    public RoomController(String dataFilePath) {
+        this.dataFilePath = dataFilePath;
+        this.init();
+    }
+    
+    
+    @Override
+    public void destroy() {
+        try (FileWriter out = new FileWriter(this.dataFilePath)) {
+            for (Room room : this) {
+                out.write(room.toCSVString() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void init() {
+        try(
+                FileReader in = new FileReader(this.dataFilePath);
+                Scanner lineScan = new Scanner(in);) {
+            String csv = null;
+            while (lineScan.hasNextLine()) {
+                csv = lineScan.nextLine();
+                try {
+                this.add(new Room(csv));
+                } catch (CSVFormatException e) {
+                    System.out.println("CSV 데이터 형식 오류!");
+                    e.printStackTrace();
+                }
+            }
+            
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     @Override
     public void execute() {
@@ -19,9 +65,7 @@ public class RoomController extends ArrayList<Room> implements Controller{
             switch (input) {
             case "add": this.doAdd(); break;
             case "list": this.doList(); break;
-            case "delete":
-                this.doDelete();
-                break;
+            case "delete": this.doDelete(); break;
             case "main":
                 break loop;
             default:
@@ -48,7 +92,7 @@ public class RoomController extends ArrayList<Room> implements Controller{
         room.setName(Prompts.inputString("강의실 이름? "));
 
         if (find(room.getName()) != null) {
-            System.out.println("이미 등록된 이메일입니다.");
+            System.out.println("이미 등록된 강의실 입니다.");
             return;
         }
         room.setLocation(Prompts.inputString("지역? "));

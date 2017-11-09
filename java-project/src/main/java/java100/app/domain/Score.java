@@ -38,7 +38,7 @@ public class Score {
     }
     
     public String toCSVString() {
-        return String.format("%s,%d,%d,%d,%d,%f\n",
+        return String.format("%s,%d,%d,%d,%d,%f",
                 this.getName(),
                 this.getKor(),
                 this.getEng(),

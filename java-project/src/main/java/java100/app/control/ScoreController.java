@@ -11,13 +11,16 @@ import java100.app.util.Prompts;
 
 public class ScoreController extends GenericController<Score> {
     
-    public ScoreController() {
+    private String dataFilePath;
+    
+    public ScoreController(String dataFilePath) {
+        this.dataFilePath = dataFilePath;
         this.init();
     }
     
     @Override
     public void destroy() {
-        try (FileWriter out = new FileWriter("./data/score.csv");) {
+        try (FileWriter out = new FileWriter(this.dataFilePath)) {
             for (Score score : this.list) {
                 out.write(score.toCSVString() + "\n");
             }
@@ -29,7 +32,7 @@ public class ScoreController extends GenericController<Score> {
     @Override
     public void init() {
         try(
-                FileReader in = new FileReader("./data/score.csv");
+                FileReader in = new FileReader(this.dataFilePath);
                 Scanner lineScan = new Scanner(in);) {
             String csv = null;
             while (lineScan.hasNextLine()) {
