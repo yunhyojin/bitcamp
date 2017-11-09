@@ -1,5 +1,6 @@
 package java100.app;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -15,7 +16,6 @@ public class App {
     
     static HashMap<String, Controller> controllerMap = 
             new HashMap<>();
-    
     
     public static void main(String[] args) {
         
@@ -73,6 +73,10 @@ public class App {
     }
 
     private static void doQuit() {
+        Collection<Controller> controls = controllerMap.values();
+        for (Controller control : controls) {
+            control.destroy();
+        }
         System.out.println("프로그램을 종료합니다.");
     }
 

@@ -1,36 +1,65 @@
 package java100.app.control;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.Scanner;
+
 import java100.app.domain.Score;
 import java100.app.util.Prompts;
 
 public class ScoreController extends GenericController<Score> {
-
+    
+    public ScoreController() {
+        this.init();
+    }
+    
+    @Override
+    public void destroy() {
+        try (FileWriter out = new FileWriter("./data/score.csv");) {
+            for (Score score : this.list) {
+                out.write(score.toCSVString() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void init() {
+        try(
+                FileReader in = new FileReader("./data/score.csv");
+                Scanner lineScan = new Scanner(in);) {
+            String csv = null;
+            while (lineScan.hasNextLine()) {
+                csv = lineScan.nextLine();
+                try {
+                list.add(new Score(csv));
+                } catch (CSVFormatException e) {
+                    System.out.println("CSV 데이터 형식 오류!");
+                    e.printStackTrace();
+                }
+            }
+            
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     @Override
     public void execute() {
         loop: while (true) {
             System.out.print("성적관리> ");
             String input = keyScan.nextLine();
             switch (input) {
-            case "add":
-                this.doAdd();
-                break;
-            case "list":
-                this.doList();
-                break;
-            case "view":
-                this.doView();
-                break;
-            case "update":
-                this.doUpdate();
-                break;
-            case "delete":
-                this.doDelete();
-                break;
-            case "main":
-                break loop;
-            default:
-                System.out.println("해당 명령이 없습니다.");
+            case "add": this.doAdd(); break;
+            case "list": this.doList(); break;
+            case "view": this.doView(); break;
+            case "update": this.doUpdate(); break;
+            case "delete": this.doDelete(); break;
+            case "main": break loop;
+            default: System.out.println("해당 명령이 없습니다.");
             }
         }
     }
