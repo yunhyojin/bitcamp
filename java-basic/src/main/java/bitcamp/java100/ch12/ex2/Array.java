@@ -40,7 +40,7 @@ public class Array {
         cursor++;
     }
     
-    public Iterator iterator() {
+    public MyIterator iterator() {
         return new MyIterator();
     }
     
