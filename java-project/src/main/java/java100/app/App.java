@@ -11,24 +11,23 @@ import java100.app.control.RoomController;
 import java100.app.control.ScoreController;
 
 public class App {
-    
+
     static Scanner keyScan = new Scanner(System.in);
-    
-    static HashMap<String, Controller> controllerMap = 
-            new HashMap<>();
-    
+
+    static HashMap<String, Controller> controllerMap = new HashMap<>();
+
     public static void main(String[] args) {
-        
+
         controllerMap.put("1", new ScoreController("./data/score.csv"));
         controllerMap.put("2", new MemberController("./data/member.csv"));
         controllerMap.put("3", new BoardController("./data/board.csv"));
-       
+
         controllerMap.put("4", new RoomController("./data/room.csv"));
-        
+
         loop: while (true) {
             System.out.print("명령> ");
             String[] input = keyScan.nextLine().toLowerCase().split(" ");
-            
+
             try {
                 switch (input[0]) {
                 case "menu": doMenu(); break;
@@ -47,7 +46,7 @@ public class App {
     private static void doGo(String menuNo) {
 
         Controller controller = controllerMap.get(menuNo);
-        
+
         if (controller == null) {
             System.out.println("해당 번호의 메뉴가 없습니다.");
             return;
