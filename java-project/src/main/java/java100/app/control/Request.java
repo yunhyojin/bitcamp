@@ -1,5 +1,6 @@
 package java100.app.control;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class Request {
@@ -18,7 +19,9 @@ public class Request {
 			String[] arr = path[1].split("&");
 			for (String param : arr) {
 				String[] kv = param.split("=");
-				this.params.put(kv[0], kv[1]);
+				try {
+				this.params.put(kv[0], URLDecoder.decode(kv[1], "UTF-8"));
+				}catch (Exception e) {}
 			}
 		}
 	}

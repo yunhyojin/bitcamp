@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 
 import java100.app.domain.Member;
-import java100.app.util.Prompts;
 
 public class MemberController extends GenericController<Member> {
     
@@ -22,14 +21,18 @@ public class MemberController extends GenericController<Member> {
     
     @Override
     public void destroy() {
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(this.dataFilePath)))) {
-
+        
+        try (PrintWriter out = new PrintWriter(
+                new BufferedWriter(
+                        new FileWriter(this.dataFilePath)));) {
             for (Member member : this.list) {
                 out.println(member.toCSVString());
             }
-
+            // 버퍼에 남은 찌꺼기를 마저 출력한다.
+            // => 물론 close()가 호출되도 버퍼에 남은 찌꺼기가 출력될 것이다.
+            // => 그래도 가능한 명시적으로 출력하자!
             out.flush();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,137 +40,127 @@ public class MemberController extends GenericController<Member> {
     
     @Override
     public void init() {
+        
         try (BufferedReader in = new BufferedReader(
                 new FileReader(this.dataFilePath));) {
+            
             String csv = null;
             while ((csv = in.readLine()) != null) {
                 try {
                     list.add(new Member(csv));
                 } catch (CSVFormatException e) {
-                    System.out.println("CSV 데이터 형식 오류!");
+                    System.err.println("CSV 데이터 형식 오류!");
                     e.printStackTrace();
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-
-    @Override
-    public void execute() {
-        loop: while (true) {
-            System.out.print("회원관리> ");
-            String input = keyScan.nextLine();
-            switch (input) {
-            case "add": this.doAdd(); break;
-            case "list":
-                this.doList();
-                break;
-            case "view":
-                this.doView();
-                break;
-            case "update":
-                this.doUpdate();
-                break;
-            case "delete":
-                this.doDelete();
-                break;
-            case "main":
-                break loop;
-            default:
-                System.out.println("해당 명령이 없습니다.");
-            }
+    // 실제 이 클래스가 오버라이딩 하는 메서드는 
+    // GenericController가 따른다고 한 Controller 인터페이스의 
+    // 추상 메서드이다.
+    @Override    
+    public void execute(Request request, Response response) {
+        switch (request.getMenuPath()) {
+        case "/member/list": this.doList(request, response); break;
+        case "/member/add": this.doAdd(request, response); break;
+        case "/member/view": this.doView(request, response); break;
+        case "/member/update": this.doUpdate(request, response); break;
+        case "/member/delete": this.doDelete(request, response); break;
+        default: 
+            response.getWriter().println("해당 명령이 없습니다.");
         }
     }
-
-    private void doList() {
-        System.out.println("[회원 목록]");
+    
+    private void doList(Request request, Response response) {
+        PrintWriter out = response.getWriter();
+        
+        out.println("[회원 목록]");
+        
         Iterator<Member> iterator = list.iterator();
         while (iterator.hasNext()) {
             Member member = iterator.next();
-            System.out.printf("%-4s, %4s\n", member.getName(), member.getEmail());
+            out.printf("%-4s, %s\n",  
+                    member.getName(), 
+                    member.getEmail());
         }
     }
-
-    private void doAdd() {
-        System.out.println("[회원 등록]");
-
+    
+    private void doAdd(Request request, Response response) {
+        PrintWriter out = response.getWriter();
+        
+        out.println("[회원 등록]");
+        
         Member member = new Member();
-
-        member.setEmail(Prompts.inputString("이메일? "));
-
+        member.setEmail(request.getParameter("email"));
+        
         if (findByEmail(member.getEmail()) != null) {
-            System.out.println("이미 등록된 이메일입니다.");
+            out.println("이미 등록된 이메일입니다.");
             return;
         }
-        member.setName(Prompts.inputString("이름? "));
-        member.setPassword(Prompts.inputString("암호? "));
-
+        
+        member.setName(request.getParameter("name"));
+        member.setPassword(request.getParameter("password"));
+        
         list.add(member);
-    }
+        out.println("등록했습니다.");
+    } 
+    
+    private void doView(Request request, Response response) {
+        PrintWriter out = response.getWriter();
+        String email = request.getParameter("email");
 
-    private void doView() {
-        System.out.println("[회원 상세 정보]");
-        String email = Prompts.inputString("이메일? ");
+        out.println("[회원 상세 정보]");
+        
         Member member = findByEmail(email);
-
+        
         if (member == null) {
-            System.out.printf("'%s'의 회원 정보가 없습니다.\n", email);
+            out.printf("'%s'의 회원 정보가 없습니다.\n", email);
             return;
         }
-        System.out.printf("이름: %s\n", member.getName());
-        System.out.printf("이메일: %s\n", member.getEmail());
-        System.out.printf("비번: %s\n", member.getPassword());
-    }
-
-    private void doUpdate() {
-        System.out.println("[회원 상세 정보]");
-        String email = Prompts.inputString("이메일? ");
+        
+        out.printf("이름: %s\n", member.getName());
+        out.printf("이메일: %s\n", member.getEmail());
+        out.printf("암호: %s\n", member.getPassword());
+    } 
+    
+    private void doUpdate(Request request, Response response) {
+        PrintWriter out = response.getWriter();
+        String email = request.getParameter("email");
+        
+        out.println("[회원 변경]");
+        
         Member member = findByEmail(email);
+        
         if (member == null) {
-            System.out.printf("'%s'의 회원 정보가 없습니다.\n", email);
+            out.printf("'%s'의 회원 정보가 없습니다.\n", email);
             return;
         }
-
-        String name = Prompts.inputString("이름?(%s) ", member.getName());
-        if (name.isEmpty()) {
-            name = member.getName();
-        }
-
-        String password = Prompts.inputString("암호? ");
-        if (password.isEmpty()) {
-            password = member.getPassword();
-        }
-
-        if (Prompts.confirm2("변경하시겠습니까?(y/N) ")) {
-            member.setName(name);
-            member.setPassword(password);
-            ;
-            System.out.println("변경하였습니다.");
-
-        } else {
-            System.out.println("변경을 취소하였습니다.");
-        }
+        
+        member.setName(request.getParameter("name"));
+        member.setPassword(request.getParameter("password"));
+        out.println("변경하였습니다.");
     }
-
-    private void doDelete() {
-        System.out.println("[회원 상세 정보]");
-        String email = Prompts.inputString("이메일? ");
+    
+    private void doDelete(Request request, Response response) {
+        PrintWriter out = response.getWriter();
+        String email = request.getParameter("email");
+        
+        out.println("[회원 삭제]");
+        
         Member member = findByEmail(email);
+        
         if (member == null) {
-            System.out.printf("'%s'의 회원 정보가 없습니다.\n", email);
+            out.printf("'%s'의 회원 정보가 없습니다.\n", email);
             return;
         }
-        if (Prompts.confirm2("정말 삭제하시겠습니까?(y/N) ")) {
-            list.remove(member);
-            System.out.println("삭제하였습니다.");
-        } else {
-            System.out.println("삭제를 취소하였습니다.");
-        }
+        
+        list.remove(member);
+        out.println("삭제하였습니다.");
     }
-
+    
     private Member findByEmail(String email) {
         Iterator<Member> iterator = list.iterator();
         while (iterator.hasNext()) {
@@ -178,5 +171,4 @@ public class MemberController extends GenericController<Member> {
         }
         return null;
     }
-
 }
