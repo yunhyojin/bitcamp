@@ -13,7 +13,7 @@ public class Client {
 
         Scanner keyboard = new Scanner(System.in);
 
-        System.out.println("서버주소? ");
+        System.out.print("서버주소? ");
         String serverAddr = keyboard.nextLine();
 
         try (Socket socket = new Socket(serverAddr, 9999);
@@ -28,8 +28,9 @@ public class Client {
                 out.println(command);
                 out.flush();
 
-                if (command.equals("quit"))
+                if (command.equals("quit") || command.equals("server stop")) {
                     break;
+                }
 
                 while (true) {
                     String line = in.readLine();
