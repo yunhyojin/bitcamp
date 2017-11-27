@@ -26,11 +26,14 @@ public class App {
 			new HashMap<>();
 
 	void init() {
-		controllerMap.put("/score", new ScoreController("./data/score.csv"));
-		controllerMap.put("/member", new MemberController("./data/member.csv"));
-		controllerMap.put("/board", new BoardController("./data/board.csv"));
-		controllerMap.put("/room", new RoomController("./data/room.csv")); 
-
+	    ScoreController scoreController = new ScoreController();
+	    RoomController roomController = new RoomController();
+	    MemberController memberController = new MemberController();
+	    BoardController bpardController = new BoardController();
+	    controllerMap.put("/score", scoreController);
+		controllerMap.put("/member", memberController);
+		controllerMap.put("/board", bpardController);
+		controllerMap.put("/room", roomController);
 	}
 
 	void service() throws Exception {
@@ -48,7 +51,6 @@ public class App {
 			controller.destroy(); 
 		}
 	}
-
 
 	private void request(String command, PrintWriter out) {
 
@@ -128,7 +130,7 @@ public class App {
 				
 				
 				if (command.equals("/")) {
-					hello(command, out);		
+					hello(command, out);
 				} else {
 					request(command, out);
 					save();
