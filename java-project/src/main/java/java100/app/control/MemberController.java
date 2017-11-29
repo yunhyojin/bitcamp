@@ -1,33 +1,32 @@
 package java100.app.control;
 
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
 import java100.app.dao.MemberDao;
 import java100.app.domain.Member;
-import java100.app.domain.Score;
 
 public class MemberController implements Controller{
+
+    MemberDao memberDao;
     
-    MemberDao memberDao = new MemberDao();
-    
+    public void setMemberDao(MemberDao memberDao) {
+        this.memberDao = memberDao;
+    }
+
     @Override
     public void destroy() {}
-    
+
     @Override
     public void init() {
-        
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException("JDBC 드라이버 클래스를 찾을 수 없습니다.");
         }
     }
-    
+
     @Override    
     public void execute(Request request, Response response) {
         switch (request.getMenuPath()) {
@@ -40,14 +39,14 @@ public class MemberController implements Controller{
             response.getWriter().println("해당 명령이 없습니다.");
         }
     }
-    
+
     private void doList(Request request, Response response) {
         PrintWriter out = response.getWriter();
         out.println("[회원 목록]");
-        
+
         try {
             List<Member> list = memberDao.selectList();
-            
+
             for (Member member : list) {
                 out.printf("%d, %s, %s, %s\n",
                         member.getNo(),
@@ -61,18 +60,18 @@ public class MemberController implements Controller{
             out.println(e.getMessage());
         }
     }
-    
+
     private void doAdd(Request request, Response response) {
         PrintWriter out = response.getWriter();
-        
+
         out.println("[회원 등록]");
-        
+
         try {
             Member member = new Member();
             member.setName(request.getParameter("name"));
             member.setEmail(request.getParameter("email"));
             member.setPassword(request.getParameter("password"));
-            
+
             memberDao.insert(member);
             out.print("저장하였습니다.");
 
@@ -80,17 +79,17 @@ public class MemberController implements Controller{
             e.printStackTrace();
             out.println(e.getMessage());
         }
-        
+
     } 
-    
+
     private void doView(Request request, Response response) {
         PrintWriter out = response.getWriter();
         out.println("[회원 상세 정보]");
-        
+
         try {
             int no = Integer.parseInt(request.getParameter("no"));
             Member member = memberDao.selectOne(no);
-            
+
             if (member != null) {
                 out.printf("번호: %d\n", member.getNo());
                 out.printf("이름: %s\n", member.getName());
@@ -98,18 +97,18 @@ public class MemberController implements Controller{
                 out.printf("등록일: %s\n", member.getCreateDate());
             } else {
                 out.printf("'%d'의 성적 정보가 없습니다.\n", no);
-        }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             out.println(e.getMessage());
         }
-        
+
     }
-    
+
     private void doUpdate(Request request, Response response) {
         PrintWriter out = response.getWriter();
         out.println("[회원 변경]");
-        
+
         try {
             Member member = new Member();
             member.setNo(Integer.parseInt(request.getParameter("no")));
@@ -128,14 +127,14 @@ public class MemberController implements Controller{
             out.println(e.getMessage());
         }
     }
-    
+
     private void doDelete(Request request, Response response) {
         PrintWriter out = response.getWriter();
         out.println("[회원 삭제]");
-        
+
         try {
             int no = Integer.parseInt(request.getParameter("no"));
-            
+
             if (memberDao.delete(no) > 0) {
                 out.println("삭제했습니다.");
             } else {
@@ -147,5 +146,5 @@ public class MemberController implements Controller{
             out.println(e.getMessage());
         }
     }
-    
+
 }

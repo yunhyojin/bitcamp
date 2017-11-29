@@ -1,18 +1,18 @@
 package java100.app.control;
 
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
 import java100.app.dao.ScoreDao;
 import java100.app.domain.Score;
 
 public class ScoreController implements Controller {
+
+    ScoreDao scoreDao;
     
-    ScoreDao scoreDao = new ScoreDao();
+    public void setScoreDao(ScoreDao scoreDao) {
+        this.scoreDao = scoreDao;
+    }
 
     @Override
     public void destroy() {}
@@ -38,10 +38,10 @@ public class ScoreController implements Controller {
         PrintWriter out = response.getWriter();
 
         out.println("[성적 삭제]");
-        
+
         try {
             int no = Integer.parseInt(request.getParameter("no"));
-            
+
             if (scoreDao.delete(no) > 0) {
                 out.println("삭제했습니다.");
             } else {
@@ -52,7 +52,7 @@ public class ScoreController implements Controller {
             e.printStackTrace();
             out.println(e.getMessage());
         }
-        
+
     }
 
     private void doUpdate(Request request, Response response) {
@@ -87,7 +87,7 @@ public class ScoreController implements Controller {
         try {
             int no = Integer.parseInt(request.getParameter("no"));
             Score score = scoreDao.selectOne(no);
-            
+
             if (score != null) {
                 out.printf("번호: %d\n", score.getNo());
                 out.printf("이름: %s\n", score.getName());
@@ -136,7 +136,7 @@ public class ScoreController implements Controller {
             score.setKor(Integer.parseInt(request.getParameter("kor")));
             score.setEng(Integer.parseInt(request.getParameter("eng")));
             score.setMath(Integer.parseInt(request.getParameter("math")));
-            
+
             scoreDao.insert(score);
             out.print("저장하였습니다.");
 

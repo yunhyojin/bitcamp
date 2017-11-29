@@ -3,6 +3,7 @@ package java100.app.control;
 import java.io.PrintWriter;
 
 public class Response {
+    
 	private PrintWriter writer;
 
 	public PrintWriter getWriter() {
@@ -13,5 +14,4 @@ public class Response {
 		this.writer = writer;
 	}
 
-	
 }

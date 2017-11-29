@@ -8,24 +8,23 @@ public class Board {
     protected String content;
     protected Date regDate;
     protected int viewCount;
-    
+
     public Board() {}
-    
+
     public Board(int no, String title, String content, Date regDate) {
         this.no = no;
         this.title = title;
         this.content = content;
         this.regDate = regDate;
-        
+
     }
 
-    
     @Override
     public String toString() {
         return "Board [no=" + no + ", title=" + title + ", content=" + content + ", regDate=" + regDate + ", viewCount="
                 + viewCount + "]";
     }
-    
+
     public int getNo() {
         return no;
     }
@@ -65,5 +64,5 @@ public class Board {
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
     }
-    
+
 }

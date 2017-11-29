@@ -1,22 +1,19 @@
 package java100.app.control;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import java100.app.dao.RoomDao;
 import java100.app.domain.Room;
 
-public class RoomController extends ArrayList<Room> implements Controller {
-    private static final long serialVersionUID = 1L;
+public class RoomController implements Controller {
     
-    RoomDao roomDao = new RoomDao();
+    RoomDao roomDao;
     
-    Scanner keyScan = new Scanner(System.in);
-    
-    public RoomController() {}
-    
+    public void setRoomDao(RoomDao roomDao) {
+        this.roomDao = roomDao;
+    }
+
     @Override
     public void destroy() {}
     

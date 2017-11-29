@@ -2,15 +2,12 @@ package java100.app.domain;
 
 import java.sql.Date;
 
-import com.mysql.fabric.xmlrpc.base.Data;
-
 public class Member {
     protected int no;
     protected String name;
     protected String email;
     protected String password;
     protected Date createDate;
-    
     
     public Member() {}
     
@@ -20,14 +17,12 @@ public class Member {
         this.email = email;
         this.createDate = createDate;
     }
-    
 
     @Override
     public String toString() {
         return "Member [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password + ", createDate="
                 + createDate + "]";
     }
-
 
     public Date getCreateDate() {
         return createDate;
