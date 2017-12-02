@@ -3,16 +3,17 @@ package java100.app.control;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java100.app.dao.ScoreDao;
 import java100.app.domain.Score;
 
+@Component("/score")
 public class ScoreController implements Controller {
 
+    @Autowired
     ScoreDao scoreDao;
-    
-    public void setScoreDao(ScoreDao scoreDao) {
-        this.scoreDao = scoreDao;
-    }
 
     @Override
     public void destroy() {}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import java100.app.domain.Board;
 
+
 public interface BoardDao {
     
     List<Board> selectList();

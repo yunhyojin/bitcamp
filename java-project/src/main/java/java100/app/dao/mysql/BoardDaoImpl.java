@@ -6,19 +6,20 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java100.app.dao.BoardDao;
 import java100.app.dao.DaoException;
 import java100.app.domain.Board;
 import java100.app.util.DataSource;
 
+@Component
 public class BoardDaoImpl implements BoardDao {
     
+    @Autowired
     DataSource ds;
     
-    public void setDataSource(DataSource ds) {
-        this.ds = ds;
-    }
-
     public List<Board> selectList() {
         Connection con = null;
         PreparedStatement pstmt = null;

@@ -6,18 +6,19 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java100.app.dao.DaoException;
 import java100.app.dao.MemberDao;
 import java100.app.domain.Member;
 import java100.app.util.DataSource;
 
+@Component
 public class MemberDaoImpl implements MemberDao {
     
+    @Autowired
     DataSource ds;
-    
-    public void setDataSource(DataSource ds) {
-        this.ds = ds;
-    }
     
     public List<Member> selectList() {
         Connection con = null;

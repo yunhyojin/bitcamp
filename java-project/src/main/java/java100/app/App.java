@@ -7,32 +7,38 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import java100.app.beans.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
 import java100.app.control.Controller;
 import java100.app.control.Request;
 import java100.app.control.Response;
 import java100.app.util.DataSource;
 
+@Configuration
+@ComponentScan("java100.app")
 public class App {
 
     ServerSocket ss;
-    
-    ApplicationContext beanContainer;
 
-    void init() {
-        
-        beanContainer = new ApplicationContext("./bin/application-context.properties");
-        
+    AnnotationConfigApplicationContext iocContainer;
+
+    @Bean
+    DataSource getDataSource() {
         DataSource ds = new DataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/studydb");
         ds.setUsername("study");
         ds.setPassword("1111");
-        
-        beanContainer.addBean("mysqlDataSource", ds);
-        
-        beanContainer.refreshBeanFactory();
-        
+        return ds;
+
+    }
+
+    void init() {
+        iocContainer = new AnnotationConfigApplicationContext(App.class);
+
     }
 
     void service() throws Exception {
@@ -53,7 +59,7 @@ public class App {
             menuName = command.substring(0, i);
         }
 
-        Object controller = beanContainer.getBean(menuName);
+        Object controller = iocContainer.getBean(menuName);
 
         if (controller  == null && controller instanceof Controller) {
             out.println("해당 명령을 지원하지 않습니다.");

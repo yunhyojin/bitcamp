@@ -6,19 +6,20 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java100.app.dao.DaoException;
 import java100.app.dao.RoomDao;
 import java100.app.domain.Room;
 import java100.app.util.DataSource;
 
+@Component
 public class RoomDaoImpl implements RoomDao {
     
+    @Autowired
     DataSource ds;
     
-    public void setDataSource(DataSource ds) {
-        this.ds = ds;
-    }
-
     public List<Room> selectList() {
         Connection con = null;
         PreparedStatement pstmt = null;

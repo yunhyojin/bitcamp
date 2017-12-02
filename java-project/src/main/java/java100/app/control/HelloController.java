@@ -1,11 +1,12 @@
 package java100.app.control;
 
 import java.io.PrintWriter;
-import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import java100.app.dao.RoomDao;
-import java100.app.domain.Room;
 
+@Component("/hello")
 public class HelloController implements Controller {
     
     RoomDao roomDao;
