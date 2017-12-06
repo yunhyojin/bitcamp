@@ -1,47 +1,68 @@
 package java100.app.control;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import java100.app.AppInitServlet;
 import java100.app.dao.MemberDao;
 import java100.app.domain.Member;
 
-@Component("/member")
-public class MemberController implements Controller{
-
-    @Autowired
+@WebServlet(urlPatterns="/member/*")
+public class MemberServlet implements Servlet {
+    
+    ServletConfig servletConfig;
+    
     MemberDao memberDao;
     
     @Override
     public void destroy() {}
 
     @Override
-    public void init() {
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("JDBC 드라이버 클래스를 찾을 수 없습니다.");
-        }
+    public void init(ServletConfig config) throws ServletException {
+        this.servletConfig = config;
+        memberDao = AppInitServlet.iocContainer.getBean(MemberDao.class);
     }
 
-    @Override    
-    public void execute(Request request, Response response) {
-        switch (request.getMenuPath()) {
-        case "/member/list": this.doList(request, response); break;
-        case "/member/add": this.doAdd(request, response); break;
-        case "/member/view": this.doView(request, response); break;
-        case "/member/update": this.doUpdate(request, response); break;
-        case "/member/delete": this.doDelete(request, response); break;
+    @Override
+    public ServletConfig getServletConfig() {
+        return this.servletConfig;
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "회원관리 서블릿";
+    }
+
+    @Override
+    public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        
+        httpResponse.setContentType("text/plain;charset=UTF-8");
+        
+        switch (httpRequest.getPathInfo()) {
+        case "/add": this.doAdd(httpRequest, httpResponse); break;
+        case "/list": this.doList(httpRequest, httpResponse); break;
+        case "/view": this.doView(httpRequest, httpResponse); break;
+        case "/update": this.doUpdate(httpRequest, httpResponse); break;
+        case "/delete": this.doDelete(httpRequest, httpResponse); break;
         default: 
             response.getWriter().println("해당 명령이 없습니다.");
         }
     }
 
-    private void doList(Request request, Response response) {
+    private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         out.println("[회원 목록]");
 
@@ -62,7 +83,7 @@ public class MemberController implements Controller{
         }
     }
 
-    private void doAdd(Request request, Response response) {
+    private void doAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 
         out.println("[회원 등록]");
@@ -83,7 +104,7 @@ public class MemberController implements Controller{
 
     } 
 
-    private void doView(Request request, Response response) {
+    private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         out.println("[회원 상세 정보]");
 
@@ -106,7 +127,7 @@ public class MemberController implements Controller{
 
     }
 
-    private void doUpdate(Request request, Response response) {
+    private void doUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         out.println("[회원 변경]");
 
@@ -129,7 +150,7 @@ public class MemberController implements Controller{
         }
     }
 
-    private void doDelete(Request request, Response response) {
+    private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         out.println("[회원 삭제]");
 
